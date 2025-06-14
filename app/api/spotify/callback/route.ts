@@ -39,7 +39,13 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Auth failed', details: data }, { status: 401 })
     }
 
+    // Write the access token to the auth file
+    authData.user_token = data.access_token
+    authData.user_refresh_token = data.refresh_token
+    fs.writeFileSync(authPath, JSON.stringify(authData, null, 2))
+
     const res = NextResponse.redirect(new URL('/admin', req.url))
+
     res.cookies.set('spotify_access_token', data.access_token, {
         path: '/',
         // TODO : enable this when prod

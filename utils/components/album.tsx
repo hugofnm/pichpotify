@@ -39,13 +39,12 @@ export default function AlbumWidget({
           priority
         />
 
-        <div className="mt-6 text-white min-w-[300px] max-w-[600px]">
+        <div className="mb-8 mt-2 text-white min-w-[300px] max-w-[600px]">
           <h2 className="text-2xl font-bold">{name}</h2>
           <p className="text-sm text-gray-200">
             {artists[0].name} &bull; {releaseYear}
           </p>
-
-          <div className="mt-4 w-full bg-white/30 rounded-full h-2">
+          <div className="mt-2 w-full bg-white/30 rounded-full h-2">
             <div
               className="bg-green-400 h-2 rounded-full transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
