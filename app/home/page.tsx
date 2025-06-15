@@ -1,6 +1,7 @@
 "use client"
 
 import { use, useEffect, useState } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 
 import AlbumWidget from '@/utils/components/album'
@@ -56,6 +57,12 @@ export default function HomeScreen() {
     const res = await fetch(`${API_URL}`)
     const data = await res.json()
 
+    if (data.refresh) {
+      // refresh the page if the album is not found
+      window.location.reload()
+      return
+    }
+
     setAlbum(data)
     if (data?.progress_ms && data?.item?.duration_ms) {
       setProgress((data.progress_ms / data.item.duration_ms) * 100)
@@ -82,7 +89,10 @@ export default function HomeScreen() {
               transition={{ duration: 1 }}
             >
               {/* Blurred background */}
-              <img
+              <Image
+                width={720}
+                height={720}
+                quality={75}
                 src={gallery[galleryIndex]}
                 alt={`photo-bg-${galleryIndex}`}
                 className="absolute inset-0 w-full h-full object-cover blur-2xl scale-110 z-0"
@@ -90,7 +100,10 @@ export default function HomeScreen() {
                 aria-hidden
               />
               {/* Foreground image */}
-              <img
+              <Image
+                width={720}
+                height={720}
+                quality={75}
                 src={gallery[galleryIndex]}
                 alt={`photo-${galleryIndex}`}
                 className="relative z-10 w-full h-auto max-h-full shadow-lg object-contain"
@@ -130,8 +143,8 @@ export default function HomeScreen() {
               <Button onClick={() => window.location.reload()} className="mb-2">
                 Recharger la page
               </Button>
-              <Button onClick={() => window.location.href = '/power'} className="mb-2">
-                Reboot le Pichpotify
+              <Button onClick={() => window.location.href = '/api/power'} className="mb-2">
+                Éteindre le Pichpotify
               </Button>
 
               <Label className="mt-4" htmlFor="slider">Intervalle de lecture gallerie</Label>

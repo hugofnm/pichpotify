@@ -17,7 +17,6 @@ import {
 import { Trash2 } from "lucide-react"
 
 export default function AdminPage() {
-  const [token, setToken] = useState<string | null>(null)
   const [gallery, setGallery] = useState<string[]>([])
   const [tempImage, setTempImage] = useState<File | null>(null)
 
@@ -26,10 +25,6 @@ export default function AdminPage() {
   useEffect(() => {
     // Fetch the gallery images on component mount
     fetchGallery()
-
-    // Check for Spotify access token in cookies
-    const match = document.cookie.match(/spotify_access_token=([^;]+)/)
-    if (match) setToken(match[1])
   }, [])
 
   const fetchGallery = async () => {
@@ -90,15 +85,11 @@ export default function AdminPage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-neutral-100">
       <h1 className="text-3xl font-bold mb-4">Connexion à Spotify</h1>
-      {!token ? (
-        <Button onClick={() => {
-          window.location.href = '/api/spotify/login'
-        }} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
-          Se connecter à Spotify
-        </Button>
-      ) : (
-        <p className="text-green-700">Connecté à Spotify avec succès !</p>
-      )}
+      <Button onClick={() => {
+        window.location.href = '/api/spotify/login'
+      }} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+        Se connecter à Spotify
+      </Button>
 
       <h1 className="text-3xl font-bold mt-8 mb-4">Gestion de la galerie</h1>
       <div className="flex items-center space-x-4 mb-4">

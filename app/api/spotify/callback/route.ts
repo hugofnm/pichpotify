@@ -44,20 +44,5 @@ export async function GET(req: NextRequest) {
     authData.user_refresh_token = data.refresh_token
     fs.writeFileSync(authPath, JSON.stringify(authData, null, 2))
 
-    const res = NextResponse.redirect(new URL('/admin', req.url))
-
-    res.cookies.set('spotify_access_token', data.access_token, {
-        path: '/',
-        // TODO : enable this when prod
-        // httpOnly: true,
-        maxAge: 3600,
-    })
-
-    res.cookies.set('spotify_refresh_token', data.refresh_token, {
-        path: '/',
-        // httpOnly: true,
-        maxAge: 60 * 60 * 24 * 7, // 7 jours
-    })
-
-    return res
+    return NextResponse.redirect(new URL('/admin', req.url))
 }

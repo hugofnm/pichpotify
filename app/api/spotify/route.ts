@@ -17,6 +17,11 @@ export async function GET(req: NextRequest) {
     }
 
     const album = await getCurrentAlbum(token)
+
+    if (album?.refresh === true) {
+      return NextResponse.json({ refresh: true })
+    }
+
     const url = album?.item?.album?.images?.[0]?.url || null
 
     if (!url) {
@@ -40,8 +45,8 @@ async function getNewToken() {
   const authPath = path.join(process.cwd(), 'auth.json')
   const authData = JSON.parse(fs.readFileSync(authPath, 'utf-8'))
   const client_id = authData.spotify_client_id || null
-  const client_secret = authData.client_secret || null
-  const refresh_token = authData.refresh_token || null
+  const client_secret = authData.spotify_client_secret || null
+  const refresh_token = authData.user_refresh_token || null
 
   const url = "https://accounts.spotify.com/api/token";
 
@@ -60,8 +65,9 @@ async function getNewToken() {
   const response = await body.json();
 
   authData.user_token = response.access_token;
-  authData.refresh_token = response.refresh_token;
   fs.writeFileSync(authPath, JSON.stringify(authData, null, 2));
+
+  return NextResponse.json({ refresh: true });
 }
 
 async function getCurrentAlbum(token: string): Promise<any | null> {
