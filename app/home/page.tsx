@@ -6,9 +6,25 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import AlbumWidget from '@/utils/components/album'
 import { Button } from '@/utils/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/utils/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/utils/components/ui/card'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from "@/utils/components/ui/dialog"
 import { Label } from '@/utils/components/ui/label'
 import { Slider } from '@/utils/components/ui/slider'
+
+import { X } from 'lucide-react'
 
 const API_URL = '/api/spotify'
 const GALLERY_API_URL = '/api/gallery'
@@ -21,6 +37,7 @@ export default function HomeScreen() {
   const [galleryInterval, setGalleryInterval] = useState(30000)
   const [view, setView] = useState<'center' | 'left' | 'right'>('center')
   const [direction, setDirection] = useState<'left' | 'right'>('right')
+  const [qrCodeShown, setQrCodeShown] = useState(false)
 
   const birthDate = new Date('2025-06-08') // Date de naissance du Pichpotify
 
@@ -77,7 +94,7 @@ export default function HomeScreen() {
 
   const views = {
     left: (
-      <div className="relative w-full h-full rounded-xl shadow overflow-hidden flex items-center justify-center bg-black">
+      <div className="relative w-full h-full shadow overflow-hidden flex items-center justify-center bg-black">
         <AnimatePresence mode="wait">
           {gallery.length > 0 && (
             <motion.div
@@ -134,8 +151,8 @@ export default function HomeScreen() {
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle>Paramètres rapides</CardTitle>
-            <CardDescription>
-              Pour configurer le Pichpotify, utilise ton tel. pour accéder à https://pichpotify/admin
+            <CardDescription onClick={() => setQrCodeShown(true)}>
+                Pour configurer le Pichpotify, utilise ton tel. pour accéder à <u>https://pichpotify.local/admin</u>
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -144,7 +161,7 @@ export default function HomeScreen() {
                 Recharger la page
               </Button>
               <Button onClick={() => window.location.href = '/api/power'} className="mb-2">
-                Éteindre le Pichpotify
+                Reboot le Pichpotify
               </Button>
 
               <Label className="mt-4" htmlFor="slider">Intervalle de lecture gallerie</Label>
@@ -180,7 +197,7 @@ export default function HomeScreen() {
                 >
                   +
                 </Button>
-                <span className="ml-2 text-sm text-gray-500">{galleryInterval/1000}s</span>
+                <span className="ml-2 text-sm text-gray-500">{galleryInterval / 1000}s</span>
               </div>
             </div>
           </CardContent>
@@ -193,6 +210,30 @@ export default function HomeScreen() {
         <p className="text-sm text-gray-500">{Math.floor((Date.now() - birthDate.getTime()) / (1000 * 60 * 60 * 24))} jours depuis ma naissance :)</p>
         <p className="text-sm text-gray-500">Fait avec ❤️ pour mon Pichot par @hugofnm</p>
         <p className="text-sm text-gray-500">Powered by Spotify API</p>
+
+        <Dialog open={qrCodeShown}>
+          <DialogContent showCloseButton={false} className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Scanne-ça !</DialogTitle>
+            </DialogHeader>
+            <div className="flex items-center justify-center">
+              <Image
+                src="/qradmin.png"
+                alt="Pichpotify Logo"
+                width={256}
+                height={256}
+              />
+            </div>
+            <DialogFooter className="flex items-center justify-center w-full">
+              <DialogClose asChild>
+                <Button type="button" variant="secondary" className="mx-auto" onClick={() => setQrCodeShown(false)}>
+                  <X />
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
       </div>
     ),
   }
