@@ -107,9 +107,9 @@ export default function HomeScreen() {
             >
               {/* Blurred background */}
               <Image
-                width={720}
-                height={720}
-                quality={75}
+                width={240}
+                height={240}
+                quality={5}
                 src={gallery[galleryIndex]}
                 alt={`photo-bg-${galleryIndex}`}
                 className="absolute inset-0 w-full h-full object-cover blur-2xl scale-110 z-0"
@@ -161,7 +161,7 @@ export default function HomeScreen() {
                 Recharger la page
               </Button>
               <Button onClick={() => window.location.href = '/api/power'} className="mb-2">
-                Reboot le Pichpotify
+                Éteindre le Pichpotify
               </Button>
 
               <Label className="mt-4" htmlFor="slider">Intervalle de lecture gallerie</Label>

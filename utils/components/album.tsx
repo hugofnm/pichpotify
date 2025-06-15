@@ -21,20 +21,22 @@ export default function AlbumWidget({
         <Image
           src={imageUrl}
           alt="background"
-          layout="fill"
           objectFit="cover"
-          className="blur-2xl scale-110 opacity-90"
-          priority
+          className="absolute inset-0 w-full h-full object-cover blur-2xl scale-110 z-0"
+          style={{ filter: 'blur(32px) brightness(0.7)' }}
+          width={240}
+          height={240}
+          quality={5}
         />
-        <div className="absolute inset-0 bg-grey/10 backdrop-blur-sm" />
       </div>
 
       <div className="relative z-10 flex flex-col items-center justify-center w-full text-center">
         <Image
           src={imageUrl}
           alt="album art"
-          width={560}
-          height={560}
+          width={480}
+          height={480}
+          quality={75}
           className="rounded-xl shadow-xl border border-white"
           priority
         />

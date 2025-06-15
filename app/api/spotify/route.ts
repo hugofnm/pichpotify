@@ -75,6 +75,11 @@ async function getCurrentAlbum(token: string): Promise<any | null> {
     headers: { Authorization: `Bearer ${token}` },
   })
 
+  if (response.status === 204) {
+    // No content, meaning no track is currently playing
+    return null
+  }
+
   if (!response.ok) return getNewToken()
 
   const data = await response.json()
