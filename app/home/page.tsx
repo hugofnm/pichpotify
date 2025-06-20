@@ -51,10 +51,12 @@ export default function HomeScreen() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (!album?.item) {
+      if (!album?.item && view === 'center') {
         setView('left')
+      } else if (album?.item && view === 'left') {
+        setView('center')
       }
-    }, 5000)
+    }, 10000)
     return () => clearTimeout(timeout)
   }, [album])
 
@@ -150,21 +152,21 @@ export default function HomeScreen() {
       <div className="flex flex-col items-center justify-center w-screen">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Paramètres rapides</CardTitle>
+            <CardTitle className="text-lg">Paramètres rapides</CardTitle>
             <CardDescription onClick={() => setQrCodeShown(true)}>
-                Pour configurer le Pichpotify, utilise ton tel. pour accéder à <u>https://pichpotify.local/admin</u>
+              Pour configurer le Pichpotify, utilise ton tel. pour accéder à <u>https://pichpotify.local/admin</u>
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col">
-              <Button onClick={() => window.location.reload()} className="mb-2">
+              <Button onClick={() => window.location.reload()} className="mb-2 text-lg" size={'lg'}>
                 Recharger la page
               </Button>
-              <Button onClick={() => window.location.href = '/api/power'} className="mb-2">
+              <Button onClick={() => window.location.href = '/api/power'} className="mb-2 text-lg" size={'lg'}>
                 Éteindre le Pichpotify
               </Button>
 
-              <Label className="mt-4" htmlFor="slider">Intervalle de lecture gallerie</Label>
+              <Label className="mt-4 text-lg" htmlFor="slider">Intervalle de lecture gallerie</Label>
 
               <div className="flex items-center gap-2 mt-2">
                 <Button
@@ -197,19 +199,19 @@ export default function HomeScreen() {
                 >
                   +
                 </Button>
-                <span className="ml-2 text-sm text-gray-500">{galleryInterval / 1000}s</span>
+                <span className="ml-2 text-m text-gray-500">{galleryInterval / 1000}s</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <h2 className="text-xl mt-8 mb-4">À propos</h2>
-        <p className="text-sm text-gray-500">raspberry PI; PICHot; sPOTIFY</p>
-        <p className="text-sm text-gray-500">Pichpotify © {new Date().getFullYear()}</p>
+        <h2 className="text-2xl mt-8 mb-4">À propos</h2>
+        <p className="text-m text-gray-500">raspberry PI; PICHot; sPOTIFY</p>
+        <p className="text-m text-gray-500">Pichpotify © {new Date().getFullYear()}</p>
         <br />
-        <p className="text-sm text-gray-500">{Math.floor((Date.now() - birthDate.getTime()) / (1000 * 60 * 60 * 24))} jours depuis ma naissance :)</p>
-        <p className="text-sm text-gray-500">Fait avec ❤️ pour mon Pichot par @hugofnm</p>
-        <p className="text-sm text-gray-500">Powered by Spotify API</p>
+        <p className="text-m text-gray-500">{Math.floor((Date.now() - birthDate.getTime()) / (1000 * 60 * 60 * 24))} jours depuis ma naissance :)</p>
+        <p className="text-m text-gray-500">Fait avec ❤️ pour mon Pichot par @hugofnm</p>
+        <p className="text-m text-gray-500">Powered by Spotify API</p>
 
         <Dialog open={qrCodeShown}>
           <DialogContent showCloseButton={false} className="sm:max-w-md">
