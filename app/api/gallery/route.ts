@@ -5,7 +5,7 @@ import fs from 'fs'
 export async function GET(req: NextRequest) {
   const folder = path.join(process.cwd(), 'public/gallery')
   const files = fs.readdirSync(folder).filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file))
-  const images = files.map(file => `/gallery/${file}`)
+  const images = files.map(file => `/${file}`)
   return NextResponse.json({ images })
 }
 

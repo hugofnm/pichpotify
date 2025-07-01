@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 import { Button } from '@/utils/components/ui/button'
 import { Input } from "@/utils/components/ui/input"
@@ -33,11 +34,19 @@ export default function AdminPage() {
     setGallery(data.images || [])
   }
 
-  function createName() {
+  function createName(imageName: string): string {
     // Change the file name to a random 2 characters string
     const randomChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     const uniqueName = randomChars.replace(/./g, () => randomChars[Math.floor(Math.random() * randomChars.length)]).slice(0, 2)
-    return `${uniqueName}`
+
+    // Add the original file extension
+    const extension = imageName.split('.').pop()
+    if (!extension || !['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension.toLowerCase())) {
+      alert('Le fichier doit avoir une extension valide')
+      return ''
+    }
+
+    return `${uniqueName}.${extension}`
   }
 
   function addImage(image: File | null) {
@@ -49,9 +58,9 @@ export default function AdminPage() {
     }
 
     // Gen unique name for the image and check if it already exists
-    let uniqueName = createName()
+    let uniqueName = createName(image.name)
     while (gallery.includes(uniqueName)) {
-      uniqueName = createName()
+      uniqueName = createName(image.name)
     }
 
     const renamedImage = new File([image], uniqueName, { type: image.type })
@@ -148,7 +157,7 @@ export default function AdminPage() {
               <TableRow key={index}>
                 <TableCell className="font-medium">{image}</TableCell>
                 <TableCell>
-                  <img src={`${image}`} alt={image} className="w-16 h-16 object-cover rounded" />
+                  <Image src={`/api/photo${image}`} alt={image} className="w-16 h-16 object-cover rounded" />
                 </TableCell>
                 <TableCell>
                   <Button
