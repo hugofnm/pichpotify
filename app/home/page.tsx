@@ -108,27 +108,21 @@ export default function HomeScreen() {
               transition={{ duration: 1 }}
             >
               {/* Blurred background */}
-              <Image
-                width={240}
-                height={240}
-                quality={5}
-                src={gallery[galleryIndex]}
-                alt={`photo-bg-${galleryIndex}`}
-                className="absolute inset-0 w-full h-full object-cover blur-2xl scale-110 z-0"
-                style={{ filter: 'blur(32px) brightness(0.7)' }}
-                aria-hidden
+              <img
+              src={gallery[galleryIndex]}
+              alt={`photo-bg-${galleryIndex}`}
+              className="absolute inset-0 w-full h-full object-cover blur-2xl scale-110 z-0"
+              style={{ filter: 'blur(32px) brightness(0.7)' }}
+              aria-hidden="true"
               />
               {/* Foreground image */}
-              <Image
-                width={720}
-                height={720}
-                quality={75}
-                src={gallery[galleryIndex]}
-                alt={`photo-${galleryIndex}`}
-                className="relative z-10 w-full h-auto max-h-full shadow-lg object-contain"
-                style={{
-                  background: 'rgba(0,0,0,0.2)',
-                }}
+              <img
+              src={gallery[galleryIndex]}
+              alt={`photo-${galleryIndex}`}
+              className="relative z-10 w-full h-auto max-h-full shadow-lg object-contain"
+              style={{
+                background: 'rgba(0,0,0,0.2)',
+              }}
               />
             </motion.div>
           )}

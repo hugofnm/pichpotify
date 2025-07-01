@@ -33,11 +33,31 @@ export default function AdminPage() {
     setGallery(data.images || [])
   }
 
+  function createName() {
+    // Change the file name to a random 2 characters string
+    const randomChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    const uniqueName = randomChars.replace(/./g, () => randomChars[Math.floor(Math.random() * randomChars.length)]).slice(0, 2)
+    return `${uniqueName}`
+  }
+
   function addImage(image: File | null) {
     if (!image) return
 
+    if (gallery.length >= 25) {
+      alert('La galerie est pleine (25 images maximum)')
+      return
+    }
+
+    // Gen unique name for the image and check if it already exists
+    let uniqueName = createName()
+    while (gallery.includes(uniqueName)) {
+      uniqueName = createName()
+    }
+
+    const renamedImage = new File([image], uniqueName, { type: image.type })
+
     const formData = new FormData()
-    formData.append('image', image)
+    formData.append('image', renamedImage)
 
     fetch(`${GALLERY_API_URL}`, {
       method: 'POST',
