@@ -157,7 +157,13 @@ export default function AdminPage() {
               <TableRow key={index}>
                 <TableCell className="font-medium">{image}</TableCell>
                 <TableCell>
-                  <Image src={`/api/photo${image}`} alt={image} className="w-16 h-16 object-cover rounded" />
+                  <Image
+                    src={`/api/photo${image}`}
+                    alt={image}
+                    width={64}
+                    height={64}
+                    className="w-16 h-16 object-cover rounded"
+                  />
                 </TableCell>
                 <TableCell>
                   <Button

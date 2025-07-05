@@ -5,7 +5,7 @@ import path from 'path'
 import fs from 'fs'
 
 export async function GET(req: NextRequest) {
-  const scope = 'user-read-currently-playing'
+  const scope = 'user-read-currently-playing user-read-playback-state user-modify-playback-state'
 
   const authPath = path.join(process.cwd(), 'auth.json')
   const authData = JSON.parse(fs.readFileSync(authPath, 'utf-8'))

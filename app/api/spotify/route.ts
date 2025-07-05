@@ -16,24 +16,76 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Missing token' })
     }
 
-    const album = await getCurrentAlbum(token)
+    // get action from query parameters
+    const action = req.nextUrl.searchParams.get('action') || null
+    var status = true
 
-    if (album?.refresh === true) {
-      return NextResponse.json({ refresh: true })
+    switch (action) {
+      case 'album':
+      default:
+        const album = await getCurrentAlbum(token)
+
+        if (album?.refresh === true) {
+          return NextResponse.json({ refresh: true })
+        }
+
+        const url = album?.item?.album?.images?.[0]?.url || null
+
+        if (!url) {
+          return NextResponse.json({ error: 'No album image found' })
+        }
+
+        if (url !== prevUrl) {
+          prevUrl = url
+          ticks++
+        }
+
+        return NextResponse.json(album)
+
+      case 'pause':
+        await fetch('https://api.spotify.com/v1/me/player/pause', {
+          method: 'PUT',
+          headers: { Authorization: `Bearer ${token}` },
+        }).then((res) => {
+          if (res.status !== 204) {
+            status = false
+          }
+        })
+        return NextResponse.json({ success: status })
+
+      case 'play':
+        await fetch('https://api.spotify.com/v1/me/player/play', {
+          method: 'PUT',
+          headers: { Authorization: `Bearer ${token}` },
+        }).then((res) => {
+          if (res.status !== 204) {
+            status = false
+          }
+        })
+        return NextResponse.json({ success: status })
+
+      case 'next':
+        await fetch('https://api.spotify.com/v1/me/player/next', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        }).then((res) => {
+          if (res.status !== 204) {
+            status = false
+          }
+        })
+        return NextResponse.json({ success: status })
+
+      case 'previous':
+        await fetch('https://api.spotify.com/v1/me/player/previous', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        }).then((res) => {
+          if (res.status !== 204) {
+            status = false
+          }
+        })
+        return NextResponse.json({ success: status })
     }
-
-    const url = album?.item?.album?.images?.[0]?.url || null
-
-    if (!url) {
-      return NextResponse.json({ error: 'No album image found' })
-    }
-
-    if (url !== prevUrl) {
-      prevUrl = url
-      ticks++
-    }
-
-    return NextResponse.json(album)
   } catch (error) {
     console.error(error)
     return NextResponse.json({ error: 'Internal Server Error' })

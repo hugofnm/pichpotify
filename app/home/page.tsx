@@ -45,7 +45,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     fetchAll()
-    const interval = setInterval(() => fetchAll(), 10000)
+    const interval = setInterval(() => fetchAll(), 5000)
     return () => clearInterval(interval)
   }, [])
 
@@ -206,7 +206,7 @@ export default function HomeScreen() {
         </Card>
 
         <h2 className="text-2xl mt-8 mb-4">À propos</h2>
-        <p className="text-m text-gray-500">v1.0.3 - 03/07/2025</p>
+        <p className="text-m text-gray-500">v1.1.0 - 05/07/2025</p>
         <p className="text-m text-gray-500">Pichpotify © {new Date().getFullYear()}</p>
         <br />
         <p className="text-m text-gray-500">{Math.floor((Date.now() - birthDate.getTime()) / (1000 * 60 * 60 * 24))} jours depuis ma naissance :)</p>
